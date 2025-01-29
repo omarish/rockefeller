@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Important",
+    "color": {
+      "backgroundColor": "#FFFF00",
+      "textColor": "#000000"
+    },
+    "messageListVisibility": "show",
+    "labelListVisibility": "labelShow"
+  },
+  {
+    "name": "Backlog",
+    "color": {
+      "backgroundColor": "#33cccc",
+      "textColor": "#ffffff"
+    },
+    "messageListVisibility": "show",
+    "labelListVisibility": "labelShow"
+  }
+]

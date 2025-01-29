@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-import typer
 from typing import Optional
+
+import typer
 
 from . import gmail
 

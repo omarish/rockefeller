@@ -1,3 +1,3 @@
 .PHONY: lint
 lint:
-	uv run fuff format .
+	uv run ruff check --fix .

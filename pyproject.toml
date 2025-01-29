@@ -11,3 +11,21 @@ dependencies = [
     "ruff>=0.9.3",
     "typer>=0.15.1",
 ]
+authors = [
+    {name = "Omar Bohsali", email = "omar.bohsali@gmail.com"},
+]
+license = {text = "MIT"}
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+# Add these lines:
+lint.select = ["I"]
+fix = true
+
+[lint.isort]
+known-first-party = ["rockefeller"]

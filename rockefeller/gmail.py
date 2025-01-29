@@ -1,30 +1,26 @@
-import typer
 import json
 import os
+import pickle
 from typing import Optional
 
-# Google API imports
-from google_auth_oauthlib.flow import InstalledAppFlow
-from google.auth.transport.requests import Request
 import google.auth.exceptions
 import googleapiclient.discovery
+import typer
+from google.auth.transport.requests import Request
+from google_auth_oauthlib.flow import InstalledAppFlow
 
 app = typer.Typer(help="Commands related to Gmail.")
 
 SCOPES = ["https://www.googleapis.com/auth/gmail.labels"]
 
 
-def get_gmail_service(credentials_file: str = "credentials.json", token_file: str = "token.json"):
+def get_gmail_service(
+    credentials_file: str = "credentials.json", token_file: str = "token.json"
+):
     """
     Returns an authorized Gmail API client service instance, automatically prompting
     for OAuth authentication in a browser if there are no valid credentials.
     """
-    import os
-    import pickle
-    from google_auth_oauthlib.flow import InstalledAppFlow
-    from google.auth.transport.requests import Request
-    import google.auth.exceptions
-    import googleapiclient.discovery
 
     creds = None
 
@@ -79,7 +75,9 @@ def upsert_gmail_labels(service, user_id: str, labels_data: list):
         if label_name in existing_labels_map:
             label_id = existing_labels_map[label_name]
             typer.echo(f"Updating label '{label_name}' (ID: {label_id})")
-            service.users().labels().update(userId=user_id, id=label_id, body=label_body).execute()
+            service.users().labels().update(
+                userId=user_id, id=label_id, body=label_body
+            ).execute()
         else:
             typer.echo(f"Creating label '{label_name}'")
             service.users().labels().create(userId=user_id, body=label_body).execute()
@@ -88,9 +86,15 @@ def upsert_gmail_labels(service, user_id: str, labels_data: list):
 @app.command("upsert-labels")
 def upsert_labels(
     email: str = typer.Argument(..., help="The Gmail address to operate on."),
-    from_file: Optional[str] = typer.Option(None, "--from-file", "-f", help="Path to the JSON labels file."),
-    credentials_file: str = typer.Option("credentials.json", "--credentials-file", help="Path to your OAuth2 creds."),
-    token_file: str = typer.Option("token.json", "--token-file", help="Path to store your OAuth tokens."),
+    from_file: Optional[str] = typer.Option(
+        None, "--from-file", "-f", help="Path to the JSON labels file."
+    ),
+    credentials_file: str = typer.Option(
+        "credentials.json", "--credentials-file", help="Path to your OAuth2 creds."
+    ),
+    token_file: str = typer.Option(
+        "token.json", "--token-file", help="Path to store your OAuth tokens."
+    ),
 ):
     """
     Upsert labels for the specified Gmail account.
@@ -111,6 +115,8 @@ def upsert_labels(
     with open(from_file, "r") as f:
         labels_data = json.load(f)
 
-    service = get_gmail_service(credentials_file=credentials_file, token_file=token_file)
+    service = get_gmail_service(
+        credentials_file=credentials_file, token_file=token_file
+    )
     upsert_gmail_labels(service, email, labels_data)
     typer.echo("Done upserting labels.")
